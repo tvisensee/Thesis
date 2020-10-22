@@ -10,9 +10,9 @@ def main():
     
     tis_gene_exp = read_matrix('sexbias.conserved.matrix.txt')
     
-    tissue = ['Skin', 'Heart', 'Brain', 'Muscle', 'Spleen', 'Adipose', 'Thyroid', 'Colon', 'Lung', 'Liver', 'Pituitary', 'Adrenal']
+    tissues = ['Skin', 'Heart', 'Brain', 'Muscle', 'Spleen', 'Adipose', 'Thyroid', 'Colon', 'Lung', 'Liver', 'Pituitary', 'Adrenal']
     
-    write_info(tis_gene_exp, '.sexbias.conserved.genes.txt', ['Brain'], genesOnly=True)
+    write_info(tis_gene_exp, '.sexbias.conserved.genes.txt', tissues, genesOnly=True)
     
     return
 
@@ -75,7 +75,7 @@ def write_info(dictionary, outfile, tissue, genesOnly=None):
                 genes = []
                 for gene in dictionary[item]:
                     genes = genes + [gene[0]]
-                info.writerow(genes + '\n') # write all gene names on seperate rows
+                info.writerow(genes) # write all gene names on seperate rows
                 print("\nWrote only genes to", name) 
             elif genesOnly == False:
                 info.writerows(dictionary[item]) #write the [gene, bias] lists as rows to the file
