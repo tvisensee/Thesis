@@ -15,7 +15,7 @@ def main():
     #write_info(tis_gene_exp, '.sexbias.conserved.genes.txt', tissues, genesOnly=True)
     stats_table = get_stats(tis_gene_exp)
     
-    write_file(stats_table, 'sbc_quicksum.txt')
+    write_file(stats_table, 'sbc_quicksum.csv')
     
     return
 
