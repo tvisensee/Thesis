@@ -1,0 +1,13 @@
+"Tissue","GeneCount","FemaleBias","MaleBias"
+"Skin",335,238,97
+"Heart",139,55,84
+"Brain",151,77,74
+"Muscle",376,174,202
+"Spleen",446,166,280
+"Adipose",557,311,246
+"Thyroid",236,134,102
+"Colon",128,69,59
+"Lung",142,67,75
+"Liver",139,60,79
+"Pituitary",805,347,458
+"Adrenal",431,146,285

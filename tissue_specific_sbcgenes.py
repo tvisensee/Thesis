@@ -12,7 +12,10 @@ def main():
     
     tissues = ['Skin', 'Heart', 'Brain', 'Muscle', 'Spleen', 'Adipose', 'Thyroid', 'Colon', 'Lung', 'Liver', 'Pituitary', 'Adrenal']
     
-    write_info(tis_gene_exp, '.sexbias.conserved.genes.txt', tissues, genesOnly=True)
+    #write_info(tis_gene_exp, '.sexbias.conserved.genes.txt', tissues, genesOnly=True)
+    stats_table = get_stats(tis_gene_exp)
+    
+    write_file(stats_table, 'sbc_quicksum.txt')
     
     return
 
@@ -58,6 +61,34 @@ def read_matrix(filename):
     f.close()
     print('\nSex-biased genes are now in a dictionary of {tissue: [[gene, expression bias]]}')
     return gene_dict
+
+def get_stats(dictionary):
+    #prints stats about matrix
+    stats_table = [['Tissue', 'GeneCount', 'FemaleBias', 'MaleBias']]
+    print('\n' + 'Tissue' + '     ' + 'Genes' + '     ' +'Fb_genes' + '     ' + 'Mb_genes', end = '')
+    for tissue in dictionary.keys():
+        female = 0
+        male = 0
+        for gene in dictionary[tissue]:
+            count = len(dictionary[tissue])
+            if gene[1] < 0:
+                female = female + 1
+            elif gene[1] > 0:
+                male = male + 1
+        row = [tissue,count,female,male]
+        stats_table = stats_table + [row]
+        print("\n" + tissue + "     " + str(count) + '     ' + str(female) + '     ' + str(male), end = "")
+    
+    return stats_table
+
+def write_file(table, outfile):
+    import csv
+    with open(outfile, 'w', newline = '') as f:
+        info = csv.writer(f, delimiter = ',', quoting=csv.QUOTE_NONNUMERIC, skipinitialspace=True)
+        info.writerows(table)
+        
+    print('\nwrote table to', outfile)
+    return
 
 def write_info(dictionary, outfile, tissue, genesOnly=None):
     """
