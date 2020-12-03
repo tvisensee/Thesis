@@ -6,6 +6,7 @@ and write to a new file
 ##
 @author: tvise
 """
+import csv
 def main():
     
     tis_gene_exp = read_matrix('sexbias.conserved.matrix.txt')
@@ -15,7 +16,9 @@ def main():
     #write_info(tis_gene_exp, '.sexbias.conserved.genes.txt', tissues, genesOnly=True)
     stats_table = get_stats(tis_gene_exp)
     
-    write_file(stats_table, 'sbc_quicksum.csv')
+    #write_file(stats_table, 'sbc_quicksum.csv')
+    
+    write_all_genes(tis_gene_exp, 'sbc_genes.txt')
     
     return
 
@@ -112,6 +115,20 @@ def write_info(dictionary, outfile, tissue, genesOnly=None):
                 info.writerows(dictionary[item]) #write the [gene, bias] lists as rows to the file
                 print("\nWrote genes and bias scores to", name) 
     return 
+
+def write_all_genes(matrix, outfile):
+    just_genes = []
+    for tissue in matrix.keys():
+        for gene in matrix[tissue]:
+            just_genes = just_genes + [gene[0]]
+    print('\n')
+    print(just_genes[0:19])
+    with open(outfile, 'w', newline = '') as f:
+        info = csv.writer(f, delimiter = '\t', quoting=csv.QUOTE_NONE, skipinitialspace = True)
+        info.writerow(just_genes)
+    f.close()
+    print('\nWrote all sex_biased genes to', outfile)
+    return
 
 if __name__ == '__main__':
     main()
