@@ -1,17 +1,16 @@
-# -*- coding: utf-8 -*-
 """
-Created on Wed Dec  2 18:59:26 2020
-
+Created on Tue Feb  9 15:11:29 2021
+OrthoFinder first analysis
 @author: tvise
 """
 import sys
+import csv
 
 def main():
     
-    read_OGs('all_but_dog_orthovenn_clusters.txt')
-    
     return
 
+#copied from orthovenn_analysis.py and adapted to orthofinder files
 def read_OGs(filename):
     """
     Reads a file where each line is an orthogroup made up of ensembl ids
@@ -19,8 +18,7 @@ def read_OGs(filename):
     
     """
     #Read the file
-    import csv
-    orthogroups = {} #list of sets of orthogroup protein IDs
+    orthogroups = {} #dict of sets of orthogroup protein IDs
     OG_num = 0
     OG_species_dict = {}
     
