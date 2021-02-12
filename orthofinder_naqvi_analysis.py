@@ -8,47 +8,66 @@ import csv
 
 def main():
     
+    H_orthogroups, HOG_species_dict = read_HOGs("N0_HOGs_1_31.tsv")
+    
     return
 
 #copied from orthovenn_analysis.py and adapted to orthofinder files
-def read_OGs(filename):
+def read_HOGs(filename):
     """
-    Reads a file where each line is an orthogroup made up of ensembl ids
-    "MacacaFascicularis|ENSMFAP00000021776.1	HomoSapiens|ENSP00000456585.1", e.g.
+    Reads a file where each line is an orthogroup
+    Column headers are:
+        
+    HOG	OG	Gene Tree Parent Clade	Canislupusfamiliaris	Homosapiens	
+    Macacafascicularis	Musmusculus	Rattusnorvegicus
     
+    If there are more than 1 genes from a single species they will be comma-
+    separated under the species column name 
     """
     #Read the file
-    orthogroups = {} #dict of sets of orthogroup protein IDs
-    OG_num = 0
-    OG_species_dict = {}
+    H_orthogroups = {}
+    HOG_species_dict = {}
+    first_line = "headers"
+    HOG_num = 0
     
     #This chunk of code opens the tab-delimited file with csv reader & reads it
     with open(filename, newline = '') as f:
         content = csv.reader(f, delimiter = '\t')
         for line in content:
-            species_set = set([])
-            OG_num = OG_num + 1
-            current_group = set([]) #empty set to be filled with ensembl ids
-            for item in line:   #for each ensembl ID
-                if len(item.strip().split('|')) == 2:
-                    species, ID = item.strip().split('|')   #split into species name and ID
-                else:
-                    continue
-                current_group.add(ID)
-                species_set.add(species)
-            OG_species_dict[OG_num] = species_set
-            orthogroups[OG_num] = [current_group]   
+            if first_line == "headers":
+                first_line = "done"
+                continue
+            elif first_line == "done":
+                species_set = set([])
+                current_group = set([]) #empty set to be filled with ensembl ids
+                #define important columns
+                HOG_num = line[0]
+                index = 4 #index/column at which the species begin
+                species_list = ["dog", "human", "macaque", "mouse", "rat"]
+                item_count = 0
+                for item in line:   #for each entry
+                    item_count = item_count + 1
+                    if item_count >= index and len(item) > 0:
+                        species_set.add(species_list[item_count - index])
+                        IDs = item.strip().split(',')
+                        for ID in IDs:
+                            current_group.add(ID)
+                HOG_species_dict[HOG_num] = species_set
+                H_orthogroups[HOG_num] = [current_group]   
     f.close()
-    print(OG_num)
-    print('Read', filename, 'of', len(orthogroups), 'orthogroups.')
+    
+    print(HOG_num)
+    print('Read', filename, 'of', len(H_orthogroups), 'orthogroups.')
     print('Created list of orthogroups and dictionary of species')
 
-    four_count = 0
-    for  value in OG_species_dict.values():
-        if len(value) == 4:
-            four_count = four_count + 1
-    print('there are', four_count, 'groups with all four species.')
+    five_count = 0
+    for  value in HOG_species_dict.values():
+        if len(value) == 5:
+            five_count = five_count + 1 
+    print('there are', five_count, 'groups with all five species.')
+    print('Example hierarchical orthogroup dictionary entry:\n', "N0.HOG0015353:\n",
+          H_orthogroups["N0.HOG0015353"])
     
-    return orthogroups, OG_species_dict
+    return H_orthogroups, HOG_species_dict
 
 main()
