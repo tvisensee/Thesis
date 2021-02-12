@@ -18,7 +18,7 @@ def main():
     
     #write_file(stats_table, 'sbc_quicksum.csv')
     
-    write_all_genes(tis_gene_exp, 'sbc_genes.txt')
+    #write_all_genes(tis_gene_exp, 'sbc_genes.txt')
     
     return
 
@@ -26,7 +26,7 @@ def main():
 def read_matrix(filename):
     """
     Reads a file provided as a tab-delimited matrix of tissues (columns), genes (rows),
-    and expression biases as a range from 
+    and expression biases as a range from -1 to 0 (female biases are negative)
     """
     #Read the file and populate nodes (list) and an adjacency matrix 
     #(list of lists) with values representing contact time between badgers
