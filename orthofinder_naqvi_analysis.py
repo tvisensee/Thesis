@@ -144,27 +144,31 @@ def map_gene_names(gene_list, name_dict, OGs):
     OG_hit_set = set([])
     OG_hit_dict = {}
     OG_gene_dict = {}
+    found = False
     for gene in gene_list:
         if gene in name_dict.keys():
             ensembl_IDs = name_dict[gene]
             names_found = names_found + 1 
+            found = True
             for ID in ensembl_IDs:
-                if names_found == 1:
-                    print(ID)
+                if found == True:
+                    #print(ID)
+                    for OG_num, group in OGs.items():
+                        if ID in group: 
+                            mapped_IDs = mapped_IDs + 1
+                            OG_hit_set.add(OG_num)
+                            OG_gene_dict[OG_num] = [gene, group]
+                            #print("hit found!", OG_num, gene, len(group))
                 else:
                     continue
-                for OG_num, group in OGs.items():
-                    if ID in group: 
-                        mapped_IDs = mapped_IDs + 1
-                        OG_hit_set.add(OG_num)
-                        OG_gene_dict[OG_num] = [gene, group]
-                        print("hit found!", OG_num, gene, len(group))
         else:
+            found = False
             not_found = not_found + 1
             continue
     print(names_found, "sex biased, conserved gene names found in the name translation dict")
     print(not_found, "sbc gene names not found in the name translation dict")
     print("Orthogroups that genes mapped to:", len(OG_hit_set))
+    
     return
 
 def truncate_ID(ID):
