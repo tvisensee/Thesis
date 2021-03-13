@@ -28,11 +28,6 @@ def read_matrix(filename):
     Reads a file provided as a tab-delimited matrix of tissues (columns), genes (rows),
     and expression biases as a range from -1 to 0 (female biases are negative)
     """
-    #Read the file and populate nodes (list) and an adjacency matrix 
-    #(list of lists) with values representing contact time between badgers
-    import csv
-    gene_mat = []
-    
     #This chunk of code opens the tab-delimited file with csv reader & reads it
     with open(filename, newline = '') as f:
         matrix = csv.reader(f, delimiter = '\t')
