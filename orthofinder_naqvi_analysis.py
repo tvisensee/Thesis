@@ -7,17 +7,23 @@ import sys
 import csv
 
 def main():
-    
+    # Read in file of hierarchical orthogroups
     H_orthogroups, HOG_species_dict = read_HOGs("N0_HOGs_1_31.tsv")
     
+    # Read in file of sex-biased conserved genes and the tissues they were found in (Naqvi genes)
     gene_tissue, gene_list, exp_dict, no_tissue_genes = read_matrix("sexbias.conserved.matrix.txt")
     
+    # Read in and create a gene name: ensembl ID key from a file associated names and IDs
     name_dict = read_ID_key("sexbias.genename.ensembl.IDs.csv")
     
+    # Look for IDs in OGs that correspond to the Naqvi genes, write those OGs to dictionaries
     OG_hit_set, OG_hit_dict, OG_gene_dict, OG_mapped_IDs = map_gene_names(gene_list, name_dict, H_orthogroups)
     
+    # Merge informational dictionaries into a single dictionary of:
+        # gene name: [OG#, # species, tissue, OG size, bias, OG content]
     file_dict = merge_dicts(OG_hit_dict, OG_gene_dict, gene_tissue, HOG_species_dict, H_orthogroups, exp_dict)
     
+    # Write merged dictionary to a csv file   
     write_dict("HOG_mappings.csv", file_dict)
     
     return

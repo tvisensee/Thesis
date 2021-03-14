@@ -68,6 +68,9 @@ def read_mappings(filename):
     print('\nRead in', len(gene_dict), 'orthogroups from', filename)            
     return ID_dict, gene_dict, info
 
+# function finds ids within orthogroups that do not map to the corresponding
+# Naqvi gene; outputs a dictionary where keys are genes and values are lists
+# of [mapped_IDs, unmapped_IDs]
 def find_unmapped_IDs(name_dict, ID_dict, gene_dict):
     print('\nfind_unmapped_IDs() commencing')
     map_dict = {}
@@ -85,11 +88,32 @@ def find_unmapped_IDs(name_dict, ID_dict, gene_dict):
             else:
                 unmapped_IDs = unmapped_IDs + [ID]
                 unmapped_count = unmapped_count + 1
-            map_dict[gene] = [mapped_IDs, unmapped_IDs]
+        map_dict[gene] = [mapped_IDs, unmapped_IDs]
+    print(map_dict)
     print('\nFound', unmapped_count, 'unmpapped IDs.')
     print('\nCreated a', len(map_dict.keys()),'entry dictionary of mapped and unmapped IDs')
     return map_dict
+'''
+def merge_dicts(map_dict, info_dict):
+    # final output structure = dict[OG#] = [gene, [ids that map to gene], [IDs that don't map to gene]]
+    merged = {}
+    ID_OG = {}
+    
+    for OG_num, contents in info_dict.items():
+        for ID in contents:
+            ID_OG[ID] = OG_num
+    
+    for 
+    
+    return
 
-def print
+def write_mappings_readable(filename, dictionary):
+    
+    return
 
+def write_mappings_tidy():
+    
+    return
+
+'''
 main()
